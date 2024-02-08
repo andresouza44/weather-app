@@ -1,4 +1,4 @@
-// refatorado
+// antes da refatoração
 
 const APIKey = 'tiPaXR6L3YH8AkRybVCYbednX2lkJTTo'
 const baseUrl = 'http://dataservice.accuweather.com/'

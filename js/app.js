@@ -14,15 +14,24 @@ const showCityCard = () =>{
 
 }
 
-const showCityWeatherInfo = async cityName => { 
+
+const fetchCityWeatjerInfo = async cityName => {
     const [{Key, LocalizedName}] = await getCityData(cityName)
     const [{WeatherText, Temperature, IsDayTime, WeatherIcon}] = await getCityWeather(Key)
-    const timeIcon = `<img src='./src/icons/${WeatherIcon}.svg' />`  
     
+    return {LocalizedName, WeatherText, Temperature, IsDayTime, WeatherIcon}
+    
+}
+
+const showCityWeatherInfo = async cityName => { 
+    const {LocalizedName, WeatherText, Temperature, IsDayTime, WeatherIcon}= 
+        await fetchCityWeatjerInfo(cityName)
+    
+    const timeIcon = `<img src='./src/icons/${WeatherIcon}.svg' />`
     timeImg.src = IsDayTime ? './src/day.svg' : './src/night.svg';
     timeImgContainer.innerHTML = timeIcon  
     cityNameContainer.textContent=cityName;
-    cityTemperatureContainer.textContent=Temperature.Metric.Value;
+    cityTemperatureContainer.textContent= await Temperature.Metric.Value;
     cityWeatherContainer.textContent=WeatherText
     
     showCityCard();
@@ -43,7 +52,7 @@ const getLastCityName = () => {
 
 getLastCityName()
 
-cityForm.addEventListener('submit', event =>{
+const handCityForm =  event =>{
     event.preventDefault()
     
     const inputValue = event.target.city.value;
@@ -51,4 +60,6 @@ cityForm.addEventListener('submit', event =>{
     saveLastCityName(inputValue)
     showCityWeatherInfo(inputValue)
     cityForm.reset()
-})
+}
+
+cityForm.addEventListener('submit',handCityForm)
